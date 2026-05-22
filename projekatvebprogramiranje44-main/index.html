@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="sr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filmska baza</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container py-5">
+        <div class="app-box p-4 p-md-5">
+            <div class="d-flex justify-content-end mb-3">
+                <a href="logout.php" class="btn btn-outline-danger btn-sm">Odjavi se</a>
+            </div>
+            <div class="text-center mb-4">
+                <h1 class="main-title">Filmska baza</h1>
+                <p class="text-muted mb-0">Dodaj, filtriraj i uređuj filmove sa profesionalnim prikazom.</p>
+            </div>
+            <div class="d-flex flex-column flex-md-row gap-3 justify-content-center mb-4">
+                <button id="btnDodajFilm" class="btn btn-primary btn-lg px-4" type="button">Dodaj film</button>
+                <button id="btnPrikaziFilmove" class="btn btn-outline-dark btn-lg px-4" type="button">Prikaži filmove</button>
+            </div>
+            <section id="formaSekcija">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4">
+                        <h3 class="mb-4">Unos filma</h3>
+                        <form id="movieForm" class="row g-3" enctype="multipart/form-data">
+                            <div class="col-12 col-md-6">
+                                <label for="naziv" class="form-label">Naziv filma</label>
+                                <input type="text" id="naziv" name="naziv" class="form-control" placeholder="Unesi naziv filma" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="zanr" class="form-label">Žanr</label>
+                                <select id="zanr" name="zanr" class="form-select">
+                  <option value="">Izaberi žanr</option>
+                  <option>Akcija</option>
+                  <option>Drama</option>
+                  <option>Komedija</option>
+                  <option>Triler</option>
+                  <option>SF</option>
+                  <option>Horor</option>
+                  <option>Animirani</option>
+                  <option>Dokumentarni</option>
+                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label for="trajanje" class="form-label">Trajanje (min)</label>
+                                <input type="number" id="trajanje" name="trajanje" class="form-control" placeholder="Npr. 120" min="1" />
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label for="godina" class="form-label">Godina izlaska</label>
+                                <input type="number" id="godina" name="godina" class="form-control" placeholder="Npr. 2024" min="1888" />
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label for="ocena" class="form-label">Ocena</label>
+                                <input type="number" step="0.1" id="ocena" name="ocena" class="form-control" placeholder="1.0 - 10.0" min="1" max="10" />
+                            </div>
+                            <div class="col-12">
+                                <label for="glumci" class="form-label">Glavni glumci</label>
+                                <input type="text" id="glumci" name="glavni_glumci" class="form-control" placeholder="Unesi glavne glumce" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="producent" class="form-label">Producent</label>
+                                <input type="text" id="producent" name="producent" class="form-control" placeholder="Unesi producenta" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="izdavackaKuca" class="form-label">Izdavačka kuća</label>
+                                <input type="text" id="izdavackaKuca" name="izdavacka_kuca" class="form-control" placeholder="Unesi izdavača" />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <label for="poster" class="form-label">Poster filma</label>
+                                <input type="file" id="poster" name="poster" class="form-control" accept="image/*" />
+                            </div>
+                            <div class="col-12 d-flex flex-column flex-sm-row gap-2">
+                                <button type="submit" class="btn btn-success px-4">Sačuvaj film</button>
+                                <button type="reset" class="btn btn-secondary px-4">Reset</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <section id="filmoviSekcija" class="d-none mt-4">
+                <div class="card border-0 shadow-sm rounded-4 mb-4">
+                    <div class="card-body p-4">
+                        <div class="row g-3 align-items-end">
+                            <div class="col-12 col-md-4">
+                                <label for="filterZanr" class="form-label">Filtriraj po žanru</label>
+                                <select id="filterZanr" class="form-select">
+                  <option value="Sve">Sve</option>
+                  <option>Akcija</option>
+                  <option>Drama</option>
+                  <option>Komedija</option>
+                  <option>Triler</option>
+                  <option>SF</option>
+                  <option>Horor</option>
+                  <option>Animirani</option>
+                  <option>Dokumentarni</option>
+                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <label for="sortiranje" class="form-label">Sortiranje po žanru</label>
+                                <select id="sortiranje" class="form-select">
+                  <option value="default">Bez sortiranja</option>
+                  <option value="az">Od A do Z</option>
+                  <option value="za">Od Z do A</option>
+                </select>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button id="btnPrimeni" class="btn btn-primary w-100" type="button">Primeni</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                    <h3 class="mb-0">Lista filmova</h3>
+                    <span id="brojFilmova" class="badge text-bg-primary fs-6">0 filmova</span>
+                </div>
+                <div id="moviesContainer" class="row g-4"></div>
+            </section>
+        </div>
+    </div>
+    <div class="modal fade" id="modalUredi" tabindex="-1" aria-labelledby="modalUrediLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalUrediLabel">Uredi film</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Zatvori"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" class="row g-3" enctype="multipart/form-data">
+                        <input type="hidden" id="editId" name="id" />
+                        <div class="col-12 col-md-6">
+                            <label for="editNaziv" class="form-label">Naziv filma</label>
+                            <input type="text" id="editNaziv" name="naziv" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="editZanr" class="form-label">Žanr</label>
+                            <select id="editZanr" name="zanr" class="form-select">
+                <option>Akcija</option>
+                <option>Drama</option>
+                <option>Komedija</option>
+                <option>Triler</option>
+                <option>SF</option>
+                <option>Horor</option>
+                <option>Animirani</option>
+                <option>Dokumentarni</option>
+              </select>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="editTrajanje" class="form-label">Trajanje (min)</label>
+                            <input type="number" id="editTrajanje" name="trajanje" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="editGodina" class="form-label">Godina izlaska</label>
+                            <input type="number" id="editGodina" name="godina" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <label for="editOcena" class="form-label">Ocena</label>
+                            <input type="number" step="0.1" id="editOcena" name="ocena" class="form-control" min="1" max="10" />
+                        </div>
+                        <div class="col-12">
+                            <label for="editGlumci" class="form-label">Glavni glumci</label>
+                            <input type="text" id="editGlumci" name="glavni_glumci" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="editProducent" class="form-label">Producent</label>
+                            <input type="text" id="editProducent" name="producent" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="editIzdavackaKuca" class="form-label">Izdavačka kuća</label>
+                            <input type="text" id="editIzdavackaKuca" name="izdavacka_kuca" class="form-control" />
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="editPoster" class="form-label">Novi poster (opcionalno)</label>
+                            <input type="file" id="editPoster" name="poster" class="form-control" accept="image/*" />
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Otkaži</button>
+                    <button type="button" class="btn btn-success" id="btnSacuvajIzmene">Sačuvaj izmene</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
